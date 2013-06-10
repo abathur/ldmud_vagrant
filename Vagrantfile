@@ -78,12 +78,12 @@ Vagrant.configure("2") do |config|
   #
   config.librarian_chef.cheffile_dir = ""
   config.vm.provision :chef_solo do |chef|
-    chef.add_recipe "git"
-    chef.add_recipe "apt"
-    chef.add_recipe "screen"
-    chef.add_recipe "vim"
-    chef.add_recipe "varnish"
-    chef.add_recipe "php"
+    chef.add_recipe("git")
+    chef.add_recipe("apt")
+    chef.add_recipe("screen")
+    chef.add_recipe("vim")
+    chef.add_recipe("varnish")
+    chef.add_recipe("php")
     chef.add_recipe("mysql")
     chef.add_recipe("mysql::server")
     chef.add_recipe("memcached")
@@ -95,9 +95,11 @@ Vagrant.configure("2") do |config|
     chef.add_recipe("php-fpm")
     chef.add_recipe("redisio")
     chef.add_recipe("build-essential") # to remove?
-    #chef.add_recipe("nginx::source")
-    chef.add_recipe("nginx")
+    chef.add_recipe("nginx::source")
     chef.add_recipe("sqlite")
+
+    #chef.add_recipe("doxygen")
+
     chef.json = {
       "mysql" => {
         "server_root_password" => "iloverandompasswordsbutthiswilldo",
@@ -107,7 +109,7 @@ Vagrant.configure("2") do |config|
     }
   end
 
-
+  config.vm.provision :shell, :path => "doxygen.sh"
   config.vm.provision :shell, :path => "ldmud.sh"
   #
   #   # You may also specify custom JSON attributes:
