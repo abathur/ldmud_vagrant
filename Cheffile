@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook "git"
+cookbook "apt", "1.10.0"
+cookbook "screen"
+cookbook "vim"
+cookbook "varnish"
+cookbook "php"
+cookbook "mysql"
+cookbook "memcached"
+cookbook "php-fpm"
+cookbook "redisio"
+cookbook "nginx"
+cookbook "sqlite"

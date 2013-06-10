@@ -7,12 +7,12 @@ Vagrant.configure("2") do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "squeeze64"
+  config.vm.box = "precise64"
   config.vm.provision :shell, :path => "bootstrap.sh"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://f.willianfernandes.com.br/vagrant-boxes/DebianSqueeze64.box"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -76,16 +76,43 @@ Vagrant.configure("2") do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   #
-  # config.vm.provision :chef_solo do |chef|
-  #   chef.cookbooks_path = "../my-recipes/cookbooks"
-  #   chef.roles_path = "../my-recipes/roles"
-  #   chef.data_bags_path = "../my-recipes/data_bags"
-  #   chef.add_recipe "mysql"
-  #   chef.add_role "web"
+  config.librarian_chef.cheffile_dir = ""
+  config.vm.provision :chef_solo do |chef|
+    chef.add_recipe "git"
+    chef.add_recipe "apt"
+    chef.add_recipe "screen"
+    chef.add_recipe "vim"
+    chef.add_recipe "varnish"
+    chef.add_recipe "php"
+    chef.add_recipe("mysql")
+    chef.add_recipe("mysql::server")
+    chef.add_recipe("memcached")
+    chef.add_recipe("php::module_apc")
+    chef.add_recipe("php::module_curl")
+    chef.add_recipe("php::module_mysql")
+    chef.add_recipe("php::module_memcache")
+    chef.add_recipe("php::module_sqlite3")
+    chef.add_recipe("php-fpm")
+    chef.add_recipe("redisio")
+    chef.add_recipe("build-essential") # to remove?
+    #chef.add_recipe("nginx::source")
+    chef.add_recipe("nginx")
+    chef.add_recipe("sqlite")
+    chef.json = {
+      "mysql" => {
+        "server_root_password" => "iloverandompasswordsbutthiswilldo",
+        "server_repl_password" => "iloverandompasswordsbutthiswilldo",
+        "server_debian_password" => "iloverandompasswordsbutthiswilldo"
+      }
+    }
+  end
+
+
+  config.vm.provision :shell, :path => "ldmud.sh"
   #
   #   # You may also specify custom JSON attributes:
   #   chef.json = { :mysql_password => "foo" }
-  # end
+#    end
 
   # Enable provisioning with chef server, specifying the chef server URL,
   # and the path to the validation key (relative to this Vagrantfile).
